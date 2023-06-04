@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         .navbar {
+            padding: 0;
             background-color: #0F416F;
         }
 
@@ -44,6 +45,8 @@
 
         .navbar .nav-link:hover {
             color: #cccccc;
+            border-bottom: 1px solid white;
+            transition: all 0.5s ease;
         }
 
         .list-inline-item a {

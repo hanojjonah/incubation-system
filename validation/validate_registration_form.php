@@ -1,8 +1,10 @@
 <?php
 
+ $name = $ku_student = $id_number = $date_incubated = $innovationStage = $tel = $email = $fileName = $partner = $IP_registered = $description = $innovation_category = "";
+
 
 $errors = array(
-    'fname' => '', 'lname' => '', 'ku_student' => '', 'id_number' => '', 'date_incubated' => '',
+    'name' => '', 'ku_student' => '', 'id_number' => '', 'date_incubated' => '',
     'innovationStage' => '', 'tel' => '', 'email' => '', 'photo' => '', 'partner' => '', 'IP_registered' => '',
     'description' => '', 'innovation_category' => ''
 );
@@ -10,31 +12,17 @@ $errors = array(
 // check if the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
+
+
     // validation to check if field are filled
-    if (empty($_POST['fname'])) {
-        $errors['fname'] = "This field is required";
+    if (empty($_POST['name'])) {
+        $errors['name'] = "This field is required";
     } else {
-        $fname = $_POST['fname'];
+        $name = $_POST['name'];
         // second validation
-        if (!preg_match('/^[a-zA-Z]{2,15}$/', $fname)) {
-            $errors['fname'] = "Enter a Valid Name";
+        if (!preg_match('/^[a-zA-Z]{2,15}$/', $name)) {
+            $errors['name'] = "Enter a Valid Name";
         }
-    }
-    // validation of last name
-    if (empty($_POST['lname'])) {
-        $errors['lname'] = "This field is required";
-    } else {
-        $lname = $_POST['lname'];
-        // second validation
-        if (!preg_match('/^[a-zA-Z]{2,15}$/', $lname)) {
-            $errors['lname'] = "Enter a Valid last name";
-        }
-    }
-    // validation of KU student
-    if (empty($_POST['ku_student'])) {
-        $errors['ku_student'] = "This field is required";
-    } else {
-        $ku_student = $_POST['ku_student'];
     }
     // validation ID number
     if (empty($_POST['id_number'])) {
@@ -46,17 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $errors['id_number'] = "ID should be a number with 8 digits";
         }
     }
-    // validate date Incubated
-    if (empty($_POST['date_incubated'])) {
-        $errors['date_incubated'] = "This field is required";
+    // validate email
+    if (empty($_POST['email'])) {
+        $errors['email'] = "This field is required";
     } else {
-        $date_incubated = $_POST['date_incubated'];
-    }
-    // validate stage of innovation
-    if (isset($_POST['innovationStage']) && !empty($_POST['innovationStage'])) {
-        $innovationStage = $_POST['innovationStage'];
-    } else {
-        $errors['innovationStage'] = "This field is required";
+        $email = $_POST['email'];
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = "please enter a valid email address";
+        }
     }
     // validate phone number
     if (empty($_POST['tel'])) {
@@ -68,14 +53,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $errors['tel'] = "please enter a valid phone number";
         }
     }
-    // validate email
-    if (empty($_POST['email'])) {
-        $errors['email'] = "This field is required";
+    // validation of KU student
+    if (empty($_POST['ku_student'])) {
+        $errors['ku_student'] = "This field is required";
     } else {
-        $email = $_POST['email'];
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "please enter a valid email address";
-        }
+        $ku_student = $_POST['ku_student'];
+    }
+    // validate the IP registered
+    if (empty($_POST['IP_registered'])) {
+        $errors['IP_registered'] = "This field is required";
+    } else {
+        $IP_registered = $_POST['IP_registered'];
+    }
+
+    // validate date Incubated
+    if (empty($_POST['date_incubated'])) {
+        $errors['date_incubated'] = "This field is required";
+    } else {
+        $date_incubated = $_POST['date_incubated'];
     }
 
     // validate the passport
@@ -118,11 +113,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
         }
     }
-    // validate the IP registered
-    if (empty($_POST['IP_registered'])) {
-        $errors['IP_registered'] = "This field is required";
+    // validate stage of innovation
+    if (isset($_POST['innovationStage']) && !empty($_POST['innovationStage'])) {
+        $innovationStage = $_POST['innovationStage'];
     } else {
-        $IP_registered = $_POST['IP_registered'];
+        $errors['innovationStage'] = "This field is required";
+    }
+    // category of Innovation
+    if (isset($_POST['innovation_category']) && !empty($_POST['innovation_category'])) {
+        $innovation_category = $_POST['innovation_category'];
+    } else {
+        $errors['innovation_category'] = "This field is required";
     }
     // validate the description
     if (empty($_POST['description'])) {
@@ -139,22 +140,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
         }
     }
-    // category of Innovation
-    if (isset($_POST['innovation_category']) && !empty($_POST['innovation_category'])) {
-        $innovation_category = $_POST['innovation_category'];
-    } else {
-        $errors['innovation_category'] = "This field is required";
-    }
 
     // check if there is errors in the form
-    if (!array_filter($errors)) {
-        echo ('
-        ?>
-
-        <script>
-            swal("Good job!", "You clicked the button!", "success");
-        </script>
-        <?php ');
+    if (array_filter($errors)) {
+        // echo errors in the form
+    } else {
+        include("database/db_connect.php");
     }
 }
 

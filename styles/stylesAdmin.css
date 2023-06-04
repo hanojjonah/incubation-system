@@ -1,0 +1,186 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* main nav removing the default padding */
+.main-navbar {
+    padding: 0;
+}
+
+/* main heading chandaria incubate management system */
+.main-header {
+    color: #0F416F;
+}
+
+/* main button toggler on the left of the navbar */
+.button-toggler {
+    font-size: 35px;
+    color: #0F416F;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.button-toggler:hover {
+    color: #0fda0f;
+    font-size: 40px;
+    transition: all 0.05s ease;
+}
+
+/* sidebar */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 240px;
+    background-color: #0F416F;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    transition: all 0.5s ease;
+}
+
+/* from md screen downward the sidebar should not be displayed */
+@media screen and (max-width: 768px) {
+    .sidebar ul {
+        display: none;
+    }
+
+    .sidebar.sidebarMaximized ul {
+        display: block;
+        width: 50px;
+        transition: all 0.75s ease;
+    }
+
+    .sidebar.sidebarMinimized ul a {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sidebar.sidebarMinimized ul span {
+        display: none;
+    } 
+
+    /* second navbar when the sidebar button is toggled */
+    .second-navbar.secondNavbarMenuMinimized {
+        margin-left: 50px;
+        width: calc(100% - 50px);
+    }
+}
+
+/* sidebar links */
+.sidebar ul a {
+    display: block;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* sidebar icons */
+.sidebar ul a i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+/* sidebar links on hover */
+.sidebar ul a:hover {
+    background-color: #0fda0f;
+}
+
+/* admin icon */
+.admin-custom {
+    color: #0F416F;
+    font-size: 27px;
+}
+
+/* admin icon on hover */
+.admin-custom:hover {
+    color: #0fda0f;
+}
+
+/* notification icon */
+.notification-custom {
+    color: #0F416F;
+    font-size: 30px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.notification-custom span {
+    font-size: 10px;
+    position: absolute;
+    top: 5px;
+    right: -20px;
+    border-radius: 50%;
+}
+
+/* notification icon on hover */
+.notification-custom:hover {
+    color: #0fda0f;
+}
+
+/* second navbar with add patent button  */
+@media screen and (min-width: 768px) {
+    .second-navbar {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+        transition: all 0.5s ease;
+    }
+}
+
+/* add patent button */
+.addPatentButton {
+    background-color: #0F416F;
+    color: white;
+}
+
+.addPatentButton:hover {
+    background-color: #0fda0f;
+}
+
+@media screen and (min-width: 768px) {
+
+    /* how the sidebar should display when the toggler is clicked */
+    .sidebar.sidebarMinimized ul {
+        width: 50px;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.sidebarMinimized ul a {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sidebar.sidebarMinimized ul span {
+        display: none;
+    }
+
+    /* main-content after the second navbar */
+    .main-content {
+        width: calc(100% - 240px);
+        margin-left: 240px;
+        transition: all 0.5s ease;
+    }
+
+    /* main content when the sidebar button is toggled */
+    .main-content.mainContentMenuMinimized {
+        width: calc(100% - 50px);
+        margin-left: 50px;
+        transition: all 0.5s ease;
+    }
+
+    /* second navbar when the sidebar button is toggled */
+    .second-navbar.secondNavbarMenuMinimized {
+        margin-left: 50px;
+        width: calc(100% - 50px);
+        transition: all 0.5s ease;
+    }
+}
+
+/* custom text that will display the numbers */
+.dashboard-content.custom-content{
+    top: 50%;
+}
