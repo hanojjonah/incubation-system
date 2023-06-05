@@ -1,6 +1,10 @@
 <?php
 
- $name = $ku_student = $id_number = $date_incubated = $innovationStage = $tel = $email = $fileName = $partner = $IP_registered = $description = $innovation_category = "";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+$name = $ku_student = $id_number = $date_incubated = $innovationStage = $tel = $email = $fileName = $partner = $IP_registered = $description = $innovation_category = "";
 
 
 $errors = array(
@@ -13,14 +17,13 @@ $errors = array(
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
-
     // validation to check if field are filled
     if (empty($_POST['name'])) {
         $errors['name'] = "This field is required";
     } else {
         $name = $_POST['name'];
         // second validation
-        if (!preg_match('/^[a-zA-Z]{2,15}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z]{2,15} [a-zA-Z]{2,15}$/', $name)) {
             $errors['name'] = "Enter a Valid Name";
         }
     }
@@ -74,38 +77,43 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     // validate the passport
-    if (empty($_FILES['photo']['name'])) {
-        $errors['photo'] = "This field is required";
-    } else {
-        $files = $_FILES['photo'];
+    if (!empty($_FILES['photo'])) {
 
-        $fileName = $files['name'];
-        $fileSize = $files['size'];
-        $fileTmpLoc = $files['tmp_name'];
-        $fileError = $files['error'];
+        $img_name = $_FILES['photo']['name'];
+        $img_type = $_FILES['photo']['type'];
+        $img_size = $_FILES['photo']['size'];
+        $img_tmp_name = $_FILES['photo']['tmp_name'];
+        $error = $_FILES['photo']['error'];
 
-        // allowed only jpg jpeg png files
-        $f = explode('.', $fileName);
-        $fileExt = strtolower($f[1]);
-
-        $allowedExt = array('jpg', 'jpeg', 'png');
-        if (!in_array($fileExt, $allowedExt)) {
-            $errors['photo'] = "File Type not supported";
-        } else {
-            // checking the size of the image
-            if ($fileSize > 2000000) {
-                $errors['photo'] = "File size too large";
+        if ($error === 0) {
+            if ($img_size > 1000000) {
+                $errors['photo'] = "Sorry, your file is too large.";
             } else {
-                $dest = 'uploads/' . $fileName;
-                move_uploaded_file($fileTmpLoc, $dest);
+                $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+                $img_ex_lc = strtolower($img_ex);
+
+                $allowed_ex = array("jpg", "jpeg", "png");
+
+                if (in_array($img_ex_lc, $allowed_ex)) {
+                    $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+                    $img_upload_path = 'uploads/' . $new_img_name;
+                    move_uploaded_file($img_tmp_name, $img_upload_path);
+
+                    //insert into Database
+
+                } else {
+                    $errors['photo'] = "You can't upload files of this type";
+                }
             }
+        } else {
+            $errors['photo'] = "unknown error occurred!";
         }
     }
 
     // validate the key partner
     if (!empty($_POST['partner'])) {
         $partner = $_POST['partner'];
-        if (is_string($partner)) {
+        if (!is_string($partner)) {
             $errors['partner'] = "Enter valid names, comma separated";
         } else {
             if (str_word_count($partner) > 20) {
@@ -113,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
         }
     }
+
     // validate stage of innovation
     if (isset($_POST['innovationStage']) && !empty($_POST['innovationStage'])) {
         $innovationStage = $_POST['innovationStage'];
@@ -125,6 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     } else {
         $errors['innovation_category'] = "This field is required";
     }
+
     // validate the description
     if (empty($_POST['description'])) {
         $errors['description'] = "This field is required";
@@ -145,7 +155,59 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (array_filter($errors)) {
         // echo errors in the form
     } else {
-        include("database/db_connect.php");
+
+        include('database/db_connect.php');
+
+        $query = "SELECT * FROM incubate_registrations WHERE email = '$email' && nationalid = '$id_number'";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0) {
+            echo "A record with the same email and encubation date exists.";
+        } else {
+            $sql = "INSERT INTO incubate_registrations(name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, photo, partner,innovationCategory, innovationStage, description)
+          VALUES('$name', '$id_number', '$email', '$tel', '$ku_student', '$IP_registered', '$date_incubated', '$new_img_name', '$partner', '$innovation_category', '$innovationStage', '$description')";
+
+            $result1 = mysqli_query($conn, $sql);
+
+            if ($result1) {
+
+                //Load Composer's autoloader
+                require 'vendor/autoload.php';
+
+                // Create instance of phpmailer
+                $mail = new PHPMailer();
+
+                try {
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    $mail->isSMTP();
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'hanojjonah7066@gmail.com';
+                    $mail->Password = "70662000";
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port = 465;
+
+                    // Recipients
+                    $mail->setFrom("hanojjonah7066@gmail.com", "Mailer");
+                    $mail->addAddress('hanojjonah7066@gmail.com', 'Joe user');
+
+                    // content
+                    $mail->Subject = "Here is the Subject";
+                    $mail->Body = "This is the HTML message";
+
+                    $mail->send();
+                    echo "message has been sent";
+                }catch (Exception $e){
+                    echo "{$mail->ErrorInfo}";
+                }
+                // success
+                // header('Location: registration_form.php');
+            } else {
+                echo "Error: "  . $sql . "<br>" . mysqli_error($conn);
+            }
+        }
+
+         mysqli_close($conn);
     }
 }
 

@@ -30,15 +30,19 @@ include('validation/validate_registration_form.php');
       background-color: #0F416F;
     }
 
+    .img-block {
+      position: relative;
+      padding: 0;
+    }
+
     .custom-img {
+      position: absolute;
+      top: 0;
+      left: 0;
       height: 100%;
       width: 100%;
-      padding-left: 0;
-      filter: blur(1.25px);
-      /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-      Replace with your image path
-      background-size: cover;
-      background-position: center; */
+      object-fit: cover;
+      filter: blur(1.25px) brightness(50%);
     }
   </style>
 
@@ -55,8 +59,8 @@ include('validation/validate_registration_form.php');
   <div class="container my-4">
     <div class="row d-flex justify-content-center shadow rounded mt-1 bg-light">
       <!-- image block -->
-      <div class="col d-none d-lg-block">
-        <img src="images/register.jpg" alt="" class="img-fluid custom-img">
+      <div class="col d-lg-block img-block ">
+        <img src="images/register.jpg" alt="" class="img-fluid custom-img rounded-start">
       </div>
 
       <div class="col-md-10 col-lg-8 col-xl-7">
@@ -123,7 +127,7 @@ include('validation/validate_registration_form.php');
           <div class="col-md-6 form-group">
             <label for="kuOrNonKuStudent">Are you a KU student?</label>
             <div class="form-check">
-              <input class="form-check-input " type="radio" name="ku_student" id="ku_student" value="yes" required onclick="text(0)">
+              <input class="form-check-input " type="radio" name="ku_student" id="ku_student" value="Yes" required onclick="text(0)">
               <label class="form-check-label" for="ku_student">
                 Yes
               </label>
@@ -136,7 +140,7 @@ include('validation/validate_registration_form.php');
             </div>
 
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="ku_student" id="nonKUstudent" value="no" required onclick="text(1)">
+              <input class="form-check-input" type="radio" name="ku_student" id="nonKUstudent" value="No" required onclick="text(1)">
               <label class="form-check-label" for="nonKUstudent">
                 No
               </label>
@@ -156,13 +160,13 @@ include('validation/validate_registration_form.php');
           <div class="col-md-6 form-group">
             <label for="RegisteredIP">Is your IP registered?</label>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="IP_registered" id="IPregistered" value="yes" <?php echo isset($IP_registered) && $IP_registered === 'yes' ? 'checked' : ''; ?> required>
+              <input class="form-check-input" type="radio" name="IP_registered" id="IPregistered" value="Yes" <?php echo isset($IP_registered) && $IP_registered === 'yes' ? 'checked' : ''; ?> required>
               <label class="form-check-label" for="IPregistered">
                 Yes
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="IP_registered" id="IPnotregistered" value="no" <?php echo isset($IP_registered) && $IP_registered === 'no' ? 'checked' : ''; ?> required>
+              <input class="form-check-input" type="radio" name="IP_registered" id="IPnotregistered" value="No" <?php echo isset($IP_registered) && $IP_registered === 'no' ? 'checked' : ''; ?> required>
               <label class="form-check-label" for="IPnotregistered">
                 No
               </label>
@@ -181,7 +185,7 @@ include('validation/validate_registration_form.php');
           <!-- date Incubated -->
           <div class="col-md-6">
             <label for="date_incubated" class="form-label">Date Incubated</label>
-            <input type="text" class="form-control" id="date_incubated" name="date_incubated" value="<?php echo $date_incubated; ?>" readonly autocomplete="off" required>
+            <input type="text" class="form-control" id="date_incubated" name="date_incubated" value="<?php echo $date_incubated; ?>" autocomplete="off" required>
             <div class="invalid-feedback">
               Please fill the above field.
             </div>
@@ -306,25 +310,25 @@ include('validation/validate_registration_form.php');
     });
 
 
-     // Example starter JavaScript for disabling form submissions if there are invalid fields
-     (() => {
-       'use strict'
-     
-       // Fetch all the forms we want to apply custom Bootstrap validation styles to
-       const forms = document.querySelectorAll('.needs-validation')
-     
-       // Loop over them and prevent submission
-       Array.from(forms).forEach(form => {
-         form.addEventListener('submit', event => {
-           if (!form.checkValidity()) {
-             event.preventDefault()
-             event.stopPropagation()
-           }
-     
-           form.classList.add('was-validated')
-         }, false)
-       })
-     })()
+    // // Example starter JavaScript for disabling form submissions if there are invalid fields
+    // (() => {
+    //   'use strict'
+
+    //   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    //   const forms = document.querySelectorAll('.needs-validation')
+
+    //   // Loop over them and prevent submission
+    //   Array.from(forms).forEach(form => {
+    //     form.addEventListener('submit', event => {
+    //       if (!form.checkValidity()) {
+    //         event.preventDefault()
+    //         event.stopPropagation()
+    //       }
+
+    //       form.classList.add('was-validated')
+    //     }, false)
+    //   })
+    // })()
   </script>
 </body>
 
