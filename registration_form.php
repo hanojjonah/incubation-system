@@ -67,6 +67,9 @@ include('validation/validate_registration_form.php');
         <form class="row g-2  px-5 mt-1 mb-2 pb-1 text-body needs-validation" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" novalidate enctype="multipart/form-data">
           <h3 class="text-center border-bottom pb-1 border-dark text-body-secondary">REGISTRATION FORM</h3>
 
+          <!-- submit fail error -->
+          <h6 class="text-danger"> <?php echo $errors['submitFail'] ?></h6>
+
           <!-- name field -->
           <div class="col-md-6">
             <label for="name" class="form-label">Name</label>
@@ -310,25 +313,25 @@ include('validation/validate_registration_form.php');
     });
 
 
-    // // Example starter JavaScript for disabling form submissions if there are invalid fields
-    // (() => {
-    //   'use strict'
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+      'use strict'
 
-    //   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    //   const forms = document.querySelectorAll('.needs-validation')
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
 
-    //   // Loop over them and prevent submission
-    //   Array.from(forms).forEach(form => {
-    //     form.addEventListener('submit', event => {
-    //       if (!form.checkValidity()) {
-    //         event.preventDefault()
-    //         event.stopPropagation()
-    //       }
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
 
-    //       form.classList.add('was-validated')
-    //     }, false)
-    //   })
-    // })()
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
   </script>
 </body>
 

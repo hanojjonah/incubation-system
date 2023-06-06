@@ -10,7 +10,7 @@ $name = $ku_student = $id_number = $date_incubated = $innovationStage = $tel = $
 $errors = array(
     'name' => '', 'ku_student' => '', 'id_number' => '', 'date_incubated' => '',
     'innovationStage' => '', 'tel' => '', 'email' => '', 'photo' => '', 'partner' => '', 'IP_registered' => '',
-    'description' => '', 'innovation_category' => ''
+    'description' => '', 'innovation_category' => '', 'submitFail'=>''
 );
 
 // check if the form has been submitted
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['name'])) {
         $errors['name'] = "This field is required";
     } else {
-        $name = $_POST['name'];
+        $name = test_input($_POST['name']);
         // second validation
         if (!preg_match('/^[a-zA-Z]{2,15} [a-zA-Z]{2,15}$/', $name)) {
             $errors['name'] = "Enter a Valid Name";
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['id_number'])) {
         $errors['id_number'] = "This field is required";
     } else {
-        $id_number = $_POST['id_number'];
+        $id_number = test_input($_POST['id_number']);
         // second validation
         if (!preg_match('/^[\d]{8}$/', $id_number)) {
             $errors['id_number'] = "ID should be a number with 8 digits";
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['email'])) {
         $errors['email'] = "This field is required";
     } else {
-        $email = $_POST['email'];
+        $email = test_input($_POST['email']);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "please enter a valid email address";
         }
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['tel'])) {
         $errors['tel'] = "This field is required";
     } else {
-        $tel = $_POST['tel'];
+        $tel = test_input($_POST['tel']);
         // second validation
         if (!preg_match('/^0(1|7)[\d]{8}$/', $tel)) {
             $errors['tel'] = "please enter a valid phone number";
@@ -60,20 +60,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['ku_student'])) {
         $errors['ku_student'] = "This field is required";
     } else {
-        $ku_student = $_POST['ku_student'];
+        $ku_student = test_input($_POST['ku_student']) ;
     }
     // validate the IP registered
     if (empty($_POST['IP_registered'])) {
         $errors['IP_registered'] = "This field is required";
     } else {
-        $IP_registered = $_POST['IP_registered'];
+        $IP_registered = test_input($_POST['IP_registered']);
     }
 
     // validate date Incubated
     if (empty($_POST['date_incubated'])) {
         $errors['date_incubated'] = "This field is required";
     } else {
-        $date_incubated = $_POST['date_incubated'];
+        $date_incubated = test_input($_POST['date_incubated']);
     }
 
     // validate the passport
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // validate the key partner
     if (!empty($_POST['partner'])) {
-        $partner = $_POST['partner'];
+        $partner = test_input($_POST['partner']);
         if (!is_string($partner)) {
             $errors['partner'] = "Enter valid names, comma separated";
         } else {
@@ -124,13 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // validate stage of innovation
     if (isset($_POST['innovationStage']) && !empty($_POST['innovationStage'])) {
-        $innovationStage = $_POST['innovationStage'];
+        $innovationStage = test_input($_POST['innovationStage']);
     } else {
         $errors['innovationStage'] = "This field is required";
     }
     // category of Innovation
     if (isset($_POST['innovation_category']) && !empty($_POST['innovation_category'])) {
-        $innovation_category = $_POST['innovation_category'];
+        $innovation_category = test_input($_POST['innovation_category']);
     } else {
         $errors['innovation_category'] = "This field is required";
     }
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['description'])) {
         $errors['description'] = "This field is required";
     } else {
-        $description = $_POST['description'];
+        $description = test_input($_POST['description']);
         // check if it is string
         if (!is_string($description)) {
             $errors['description'] = "Description should be a string only";
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
-            echo "A record with the same email and encubation date exists.";
+            $errors['submitFail'] = "Sorry a record with the same email and national id exists.";
         } else {
             $sql = "INSERT INTO incubate_registrations(name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, photo, partner,innovationCategory, innovationStage, description)
           VALUES('$name', '$id_number', '$email', '$tel', '$ku_student', '$IP_registered', '$date_incubated', '$new_img_name', '$partner', '$innovation_category', '$innovationStage', '$description')";
@@ -178,12 +178,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $mail = new PHPMailer();
 
                 try {
-                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    
                     $mail->isSMTP();
                     $mail->Host = "smtp.gmail.com";
                     $mail->SMTPAuth = true;
                     $mail->Username = 'hanojjonah7066@gmail.com';
-                    $mail->Password = "70662000";
+                    $mail->Password = "jaomfwxyxhqtrpsm";
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                     $mail->Port = 465;
 
@@ -192,8 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $mail->addAddress('hanojjonah7066@gmail.com', 'Joe user');
 
                     // content
-                    $mail->Subject = "Here is the Subject";
-                    $mail->Body = "This is the HTML message";
+                    $mail->isHTML(true);
+                    $mail->Subject = "New Registration";
+                    $mail->Body = $name. " has registered. Please confirm these registration.";
 
                     $mail->send();
                     echo "message has been sent";
@@ -201,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     echo "{$mail->ErrorInfo}";
                 }
                 // success
-                // header('Location: registration_form.php');
+                 header('Location: registration_form.php');
             } else {
                 echo "Error: "  . $sql . "<br>" . mysqli_error($conn);
             }

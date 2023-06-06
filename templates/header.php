@@ -54,7 +54,7 @@
         }
 
         .list-inline-item a:hover {
-            color: #cccccc;
+            color: #0fda0f;
         }
     </style>
 </head>
