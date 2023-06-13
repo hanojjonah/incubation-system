@@ -86,7 +86,7 @@
                         <a href="registration_form.php" target="_blank" class="nav-link fw-bold">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link fw-bold">Login</a>
+                        <a href="login_form.php" class="nav-link fw-bold">Login</a>
                     </li>
                 </ul>
             </div>

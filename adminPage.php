@@ -1,19 +1,5 @@
 <?php
-include('database/db_connect.php');
 
-$sql = "SELECT id, name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, partner, innovationCategory, innovationStage, description FROM incubate_registrations";
-
-// get the result from the query
-$result = mysqli_query($conn, $sql);
-
-// convert the result to an array
-$registrations = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// free the result for memory
-mysqli_free_result($result);
-
-// closing the connection
-mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +12,9 @@ mysqli_close($conn);
 
     <!-- bootstrap5 cdn link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
 
     <!-- External style css -->
     <link rel="stylesheet" href="styles/stylesAdmin.css">
@@ -137,6 +126,19 @@ mysqli_close($conn);
             var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
             chart.draw(view, options);
         }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var registrationCount = 2;
+            $("#registrationButton").click(function() {
+                registrationCount = registrationCount + 2;
+                $("#registrationContent").load("load_registration.php", {
+                    registrationNewCount: registrationCount
+                });
+            });
+        });
     </script>
 
 </head>
@@ -329,7 +331,7 @@ mysqli_close($conn);
         <!-- Innovator's Page -->
         <div class="row mt-3 d-none innovatorsPage">
             <div class="col">
-                <h2>Innovator's Content</h2>
+                <h2>Messages Content</h2>
             </div>
             <div class="w-100 d-none d-md-block"></div>
             <div class="col-4">
@@ -339,35 +341,59 @@ mysqli_close($conn);
                 </form>
             </div>
             <div class="w-100 d-none d-md-block mb-3"></div>
-            <div class="col align-self-center">
-                        <table class="table table-success table-hover table-striped-columns">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">National Id</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Date of Incubation</th>
-                                    <th scope="col">Operations</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($registrations as $registration) { ?>
-                                    <tr>
-                                        <td scope="row"><?php echo $registration['id']; ?></td>
-                                        <td><?php echo $registration['name']; ?></td>
-                                        <td><?php echo $registration['nationalid']; ?></td>
-                                        <td><?php echo $registration['email']; ?></td>
-                                        <td><?php echo $registration['phonenumber']; ?></td>
-                                        <td><?php echo $registration['incubationdate']; ?></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm w-50">View</a>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+            <div class="col-4">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- end of the innovator's content -->
@@ -511,8 +537,9 @@ mysqli_close($conn);
 
         <!-- Registrations Page -->
         <div class="row mt-3 d-none registrationsPage">
+            <?php include('database/db_connect.php'); ?>
             <div class="col">
-                <h2>Messages Content</h2>
+                <h2>Innovator's Content</h2>
             </div>
             <div class="w-100 d-none d-md-block"></div>
             <div class="col-4">
@@ -522,61 +549,62 @@ mysqli_close($conn);
                 </form>
             </div>
             <div class="w-100 d-none d-md-block mb-3"></div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
+            <div class="col align-self-center">
+                <?php
+                    $sql = "SELECT id, name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, partner, innovationCategory, innovationStage, description FROM incubate_registrations LIMIT 2";
+        
+                    // get the result from the query
+                    $result = mysqli_query($conn, $sql);
+        
+                    // check if there are results
+        
+                    if (mysqli_num_rows($result) > 0) {
+                        // convert the result to an array
+                        $registrations = mysqli_fetch_all($result, MYSQLI_ASSOC); ?>
+                        <table class="table table-success table-hover table-striped-columns" id="registrationContent">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">National Id</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Date of Incubation</th>
+                                    <th scope="col">Register</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($registrations as $registration) { ?>
+                                    <tr>
+                                        <td scope="row"><?php echo $registration['id']; ?></td>
+                                        <td><?php echo $registration['name']; ?></td>
+                                        <td><?php echo $registration['nationalid']; ?></td>
+                                        <td><?php echo $registration['email']; ?></td>
+                                        <td><?php echo $registration['phonenumber']; ?></td>
+                                        <td><?php echo $registration['incubationdate']; ?></td>
+                                        <td>
+                                            <input type="checkbox" data-toggle="switchbutton" checked data-width="100" checked data-size="sm" data-offlabel="Deregister" checked data-onlabel="Register" id="registerButton">
+                                            <?php if ($registration == 0) {
+                                            } ?>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    <?php } else {
+                        echo "There is no result";
+                    }
+                    // free the result for memory
+                    mysqli_free_result($result);
+                
+                    // closing the connection
+                    mysqli_close($conn);
+                ?>
+                <button class="btn bg-success text-light" id="registrationButton">Show more registration</button>
+
             </div>
         </div>
+
         <!-- end of the messages content -->
 
         <!-- Settings Page -->

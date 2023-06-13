@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     // content
                     $mail->isHTML(true);
                     $mail->Subject = "New Registration";
-                    $mail->Body = $name. " has registered. Please confirm these registration.";
+                    $mail->Body = $name. " has registered. Please confirm the registration.";
 
                     $mail->send();
                     echo "message has been sent";
