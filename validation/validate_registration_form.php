@@ -14,7 +14,7 @@ $errors = array(
 );
 
 // check if the form has been submitted
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     // validation to check if field are filled

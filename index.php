@@ -18,6 +18,8 @@
 
             <h6>The home of Innovation</h6>
 
+            
+
             <a href="registration_form.php" target="_blank" class="btn text-light mt-3 mb-3 rounded-pill px-4 register-btn">Register</a>
         </div>
     </div>

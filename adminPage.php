@@ -551,7 +551,7 @@
             <div class="w-100 d-none d-md-block mb-3"></div>
             <div class="col align-self-center">
                 <?php
-                    $sql = "SELECT id, name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, partner, innovationCategory, innovationStage, description FROM incubate_registrations LIMIT 2";
+                    $sql = "SELECT id, name, nationalid, email, phonenumber, kuStudent, registeredIP, incubationdate, partner, innovationCategory, innovationStage, description FROM incubate_registrations";
         
                     // get the result from the query
                     $result = mysqli_query($conn, $sql);
